@@ -1,0 +1,119 @@
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+
+const books = [
+  {
+    title: "Krishna's Whisper: 18 Meditations for a Life of Purpose and Prosperity",
+    image: '/images/books/18_meditations_for_alife_of_purpose_and_prosperity.jpg',
+    description: 'A guide to 18 transformative meditations inspired by Krishna\'s wisdom for living a purposeful and prosperous life.',
+  },
+  {
+    title: 'A Very Simple Guide to the Bhagavad Gita',
+    image: '/images/books/a_very_simple_guide_to_bhagavad_gita.jpg',
+    description: 'An accessible introduction to the timeless teachings of the Bhagavad Gita, distilled for modern seekers.',
+  },
+  {
+    title: '51 Zen Stories to Wake Up',
+    image: '/images/books/51_zen_stories_to_wake_up.jpg',
+    description: 'A collection of thought-provoking Zen stories designed to awaken deeper awareness and spiritual insight.',
+  },
+  {
+    title: 'Art of Dust',
+    image: '/images/books/Art_of_dust.jpg',
+    description: 'A cinematic exploration of the ancient art form of Kalamezhuthu, capturing the beauty of impermanence and devotion.',
+  },
+];
+---
+
+<Layout title="Donations & Books | The 18 Steps USA">
+
+  <!-- ===== HERO ===== -->
+  <section class="relative py-32 flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-royal/20 via-cosmic to-cosmic"></div>
+    <div class="absolute inset-0 bg-pattern-mandala opacity-50"></div>
+    <div class="relative z-10 text-center px-4 max-w-3xl mx-auto pt-12">
+      <h1 class="text-5xl md:text-6xl font-display font-bold text-gradient-gold mb-6">Support Our Mission</h1>
+      <p class="font-serif text-xl text-cream/80 italic">Every contribution helps preserve Dharma, Heritage and Humanity</p>
+      <div class="gold-divider"></div>
+    </div>
+  </section>
+
+  <!-- ===== DONATION SECTION ===== -->
+  <section class="py-24 bg-cosmic">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="section-title text-4xl md:text-5xl">Make a Donation</h2>
+        <div class="gold-divider"></div>
+        <p class="text-cream/70 mt-6 max-w-2xl mx-auto">
+          Your generous donations support our mission of preserving Sanatana Dharma values, heritage conservation, temple renovation, Vedic studies, and humanitarian efforts.
+        </p>
+      </div>
+
+      <div class="card-dark max-w-2xl mx-auto text-center animate-glow">
+        <svg class="w-20 h-20 text-saffron mx-auto mb-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+        <h3 class="text-2xl font-display font-semibold text-saffron mb-4">Donate to The 18 Steps USA</h3>
+        <p class="text-cream/70 mb-8">
+          We are a non-profit organization. All donations go directly towards supporting our cultural programs, educational initiatives, and community events.
+        </p>
+        <a href="#" class="btn-primary text-lg px-12 py-4" onclick="alert('Donation portal coming soon! Please check back later.'); return false;">
+          Donate Now
+        </a>
+        <p class="text-cream/40 text-xs mt-4">Donation portal (Zeffy/GoFundMe) coming soon</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BOOKS SECTION ===== -->
+  <section class="py-24 bg-gradient-to-b from-cosmic to-cosmic-light/20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <p class="text-saffron/80 text-sm tracking-[0.3em] uppercase mb-2">By Sharath A Haridasan</p>
+        <h2 class="section-title text-4xl md:text-5xl">Books</h2>
+        <div class="gold-divider"></div>
+        <p class="text-cream/70 mt-6 max-w-2xl mx-auto">
+          Support our work by purchasing books authored by our mentor, Sharath A Haridasan. Each book is a gateway to deeper spiritual understanding.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        {books.map((book) => (
+          <div class="card-dark group hover:border-saffron/40 transition-all duration-300 flex flex-col">
+            <div class="overflow-hidden rounded-lg mb-4">
+              <img
+                src={book.image}
+                alt={book.title}
+                class="w-full h-72 object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+            </div>
+            <h3 class="text-saffron font-semibold text-sm leading-tight mb-2 flex-grow">{book.title}</h3>
+            <p class="text-cream/50 text-xs leading-relaxed mb-4">{book.description}</p>
+            <a
+              href="#"
+              class="btn-outline text-xs text-center py-2 px-4"
+              onclick="alert('Amazon link coming soon!'); return false;"
+            >
+              Buy on Amazon
+            </a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="py-24 bg-cosmic relative">
+    <div class="absolute inset-0 bg-pattern-mandala opacity-30"></div>
+    <div class="max-w-3xl mx-auto px-4 text-center relative z-10">
+      <h2 class="section-title text-3xl md:text-4xl">Join Us at the Inauguration</h2>
+      <div class="gold-divider"></div>
+      <p class="text-cream/70 text-lg mt-6 mb-10">
+        Be part of a historic moment as we inaugurate The 18 Steps USA chapter on June 6, 2026.
+      </p>
+      <a href={`${base}#rsvp`} class="btn-primary text-lg px-12 py-4">RSVP Now</a>
+    </div>
+  </section>
+
+</Layout>

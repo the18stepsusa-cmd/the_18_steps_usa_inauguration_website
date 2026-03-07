@@ -1,0 +1,115 @@
+---
+import Layout from '../layouts/Layout.astro';
+const base = import.meta.env.BASE_URL;
+
+const paintings = [
+  {
+    title: 'Divine Radiance',
+    price: '$250',
+    description: 'Hand-drawn spiritual artwork capturing the essence of divine light.',
+  },
+  {
+    title: 'Sacred Lotus',
+    price: '$180',
+    description: 'A beautiful depiction of the lotus, symbol of purity and enlightenment.',
+  },
+  {
+    title: 'Cosmic Dance',
+    price: '$320',
+    description: 'An artistic interpretation of the Nataraja, the cosmic dance of creation.',
+  },
+  {
+    title: 'Temple at Dawn',
+    price: '$200',
+    description: 'A serene painting of an ancient temple bathed in morning light.',
+  },
+  {
+    title: 'Vedic Fire',
+    price: '$275',
+    description: 'The sacred fire ritual captured in vivid strokes and warm tones.',
+  },
+  {
+    title: 'Peacock Feather',
+    price: '$150',
+    description: 'A delicate rendering of Krishna\'s beloved peacock feather.',
+  },
+];
+---
+
+<Layout title="Art Gallery | The 18 Steps USA">
+
+  <!-- ===== HERO ===== -->
+  <section class="relative py-32 flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-b from-royal/20 via-cosmic to-cosmic"></div>
+    <div class="absolute inset-0 bg-pattern-mandala opacity-50"></div>
+    <div class="relative z-10 text-center px-4 max-w-3xl mx-auto pt-12">
+      <h1 class="text-5xl md:text-6xl font-display font-bold text-gradient-gold mb-6">Art Gallery</h1>
+      <p class="font-serif text-xl text-cream/80 italic">Hand-drawn paintings celebrating Dharmic art and tradition</p>
+      <div class="gold-divider"></div>
+    </div>
+  </section>
+
+  <!-- ===== GALLERY GRID ===== -->
+  <section class="py-24 bg-cosmic">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-16">
+        <h2 class="section-title text-4xl md:text-5xl">Our Collection</h2>
+        <div class="gold-divider"></div>
+        <p class="text-cream/70 mt-6 max-w-2xl mx-auto">
+          Each painting is a unique, hand-drawn original by talented artists inspired by Sanatana Dharma. All proceeds support The 18 Steps USA mission.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {paintings.map((painting, index) => (
+          <div class="card-dark group hover:border-saffron/40 transition-all duration-300">
+            <!-- Placeholder for painting image -->
+            <div class="w-full h-72 rounded-lg mb-4 bg-gradient-to-br from-cosmic-light to-royal/20 border border-saffron/10 flex items-center justify-center overflow-hidden">
+              <div class="text-center">
+                <svg class="w-16 h-16 text-saffron/30 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <p class="text-cream/20 text-xs">Painting #{index + 1}</p>
+              </div>
+            </div>
+
+            <div class="flex items-start justify-between mb-2">
+              <h3 class="text-saffron font-semibold">{painting.title}</h3>
+              <span class="text-gold-light font-display font-bold text-lg">{painting.price}</span>
+            </div>
+            <p class="text-cream/50 text-sm leading-relaxed mb-4">{painting.description}</p>
+            <a
+              href="mailto:info@the18stepsusa.org?subject=Inquiry about painting: {painting.title}"
+              class="btn-outline text-xs text-center py-2 px-4 block"
+            >
+              Contact for Purchase
+            </a>
+          </div>
+        ))}
+      </div>
+
+      <div class="text-center mt-16">
+        <p class="text-cream/50 text-sm">
+          Interested in commissioning a custom piece? <a href="mailto:info@the18stepsusa.org" class="text-saffron hover:underline">Contact us</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA ===== -->
+  <section class="py-24 bg-gradient-to-b from-cosmic to-cosmic-light/20 relative">
+    <div class="absolute inset-0 bg-pattern-mandala opacity-30"></div>
+    <div class="max-w-3xl mx-auto px-4 text-center relative z-10">
+      <h2 class="section-title text-3xl md:text-4xl">Support Our Artists</h2>
+      <div class="gold-divider"></div>
+      <p class="text-cream/70 text-lg mt-6 mb-10">
+        Every painting purchased directly supports our community's artists and The 18 Steps USA mission of preserving Dharma and Heritage.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href={`${base}donations`} class="btn-primary px-10 py-4">Make a Donation</a>
+        <a href={`${base}#rsvp`} class="btn-outline px-10 py-4">RSVP for Event</a>
+      </div>
+    </div>
+  </section>
+
+</Layout>

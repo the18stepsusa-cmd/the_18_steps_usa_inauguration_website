@@ -1,0 +1,64 @@
+---
+const currentYear = new Date().getFullYear();
+const base = import.meta.env.BASE_URL;
+---
+
+<footer class="bg-cosmic-light/50 border-t border-saffron/10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid md:grid-cols-3 gap-12">
+      <!-- Brand -->
+      <div>
+        <div class="flex items-center gap-3 mb-4">
+          <img src={`${base}images/aesthetic/the_18_steps_logo.jpg`} alt="The 18 Steps" class="w-12 h-12 rounded-full border border-saffron/30" />
+          <div>
+            <span class="font-display text-lg text-saffron font-semibold tracking-wider">THE 18 STEPS</span>
+            <span class="block text-xs text-cream/60 tracking-widest">USA</span>
+          </div>
+        </div>
+        <p class="text-cream/60 text-sm leading-relaxed">
+          Preserving Dharma, Heritage and Humanity. Bringing the timeless wisdom of Sanatana Dharma to American shores.
+        </p>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h3 class="font-display text-saffron text-sm tracking-wider uppercase mb-4">Quick Links</h3>
+        <ul class="space-y-2">
+          <li><a href={base} class="text-cream/60 hover:text-saffron transition-colors text-sm">Home</a></li>
+          <li><a href={`${base}chaayamukhi`} class="text-cream/60 hover:text-saffron transition-colors text-sm">Chaayamukhi</a></li>
+          <li><a href={`${base}donations`} class="text-cream/60 hover:text-saffron transition-colors text-sm">Donations</a></li>
+          <li><a href={`${base}gallery`} class="text-cream/60 hover:text-saffron transition-colors text-sm">Art Gallery</a></li>
+          <li><a href={`${base}#rsvp`} class="text-cream/60 hover:text-saffron transition-colors text-sm">RSVP</a></li>
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <h3 class="font-display text-saffron text-sm tracking-wider uppercase mb-4">Contact</h3>
+        <ul class="space-y-2 text-sm text-cream/60">
+          <li>
+            <span class="text-saffron">Email:</span>
+            <a href="mailto:info@the18stepsusa.org" class="hover:text-saffron transition-colors"> info@the18stepsusa.org</a>
+          </li>
+          <li>
+            <span class="text-saffron">Event Date:</span> June 6, 2026
+          </li>
+          <li>
+            <span class="text-saffron">Venue:</span> PYLUSD Performing Arts Center
+          </li>
+          <li>
+            1651 Valencia Ave, Placentia, CA 92870
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="gold-divider mt-12"></div>
+
+    <div class="text-center mt-8">
+      <p class="text-cream/40 text-xs tracking-wider">
+        &copy; {currentYear} The 18 Steps USA. All rights reserved. | Preserving Dharma, Heritage and Humanity
+      </p>
+    </div>
+  </div>
+</footer>
