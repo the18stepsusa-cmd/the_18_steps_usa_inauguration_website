@@ -1,10 +1,10 @@
 ---
 const base = import.meta.env.BASE_URL;
 const navLinks = [
-  { name: 'Home', href: base },
-  { name: 'Chaayamukhi', href: `${base}chaayamukhi` },
-  { name: 'Donations', href: `${base}donations` },
-  { name: 'Gallery', href: `${base}gallery` },
+  { name: 'Home', href: `${base}/` },
+  { name: 'Chaayamukhi', href: `${base}/chaayamukhi` },
+  { name: 'Donations', href: `${base}/donations` },
+  { name: 'Gallery', href: `${base}/gallery` },
 ];
 ---
 
@@ -12,7 +12,7 @@ const navLinks = [
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
       <!-- Logo -->
-      <a href={base} class="flex items-center gap-3 group">
+      <a href={`${base}/`} class="flex items-center gap-3 group">
         <img
           src={`${base}/images/aesthetic/the_18_steps_logo.jpg`}
           alt="The 18 Steps"
@@ -34,7 +34,7 @@ const navLinks = [
             {link.name}
           </a>
         ))}
-        <a href={`${base}#rsvp`} class="btn-primary text-sm">RSVP Now</a>
+        <a href={`${base}/#rsvp`} class="btn-primary text-sm">RSVP Now</a>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -61,7 +61,7 @@ const navLinks = [
           {link.name}
         </a>
       ))}
-      <a href={`${base}#rsvp`} class="btn-primary text-sm block text-center mt-4">RSVP Now</a>
+      <a href={`${base}/#rsvp`} class="btn-primary text-sm block text-center mt-4">RSVP Now</a>
     </div>
   </div>
 </nav>
