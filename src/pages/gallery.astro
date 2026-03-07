@@ -7,31 +7,64 @@ const paintings = [
     title: 'Divine Radiance',
     price: '$250',
     description: 'Hand-drawn spiritual artwork capturing the essence of divine light.',
+    gradient: 'from-amber/30 via-saffron/20 to-royal/30',
+    icon: 'M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z',
   },
   {
     title: 'Sacred Lotus',
     price: '$180',
     description: 'A beautiful depiction of the lotus, symbol of purity and enlightenment.',
+    gradient: 'from-purple-soft/30 via-celestial/20 to-royal/30',
+    icon: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
   },
   {
     title: 'Cosmic Dance',
     price: '$320',
     description: 'An artistic interpretation of the Nataraja, the cosmic dance of creation.',
+    gradient: 'from-celestial/30 via-royal/20 to-cosmic-light/40',
+    icon: 'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3',
   },
   {
     title: 'Temple at Dawn',
     price: '$200',
     description: 'A serene painting of an ancient temple bathed in morning light.',
+    gradient: 'from-saffron/30 via-crimson/20 to-amber/30',
+    icon: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
   },
   {
     title: 'Vedic Fire',
     price: '$275',
     description: 'The sacred fire ritual captured in vivid strokes and warm tones.',
+    gradient: 'from-crimson/30 via-amber/20 to-saffron/30',
+    icon: 'M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z',
   },
   {
     title: 'Peacock Feather',
     price: '$150',
     description: 'A delicate rendering of Krishna\'s beloved peacock feather.',
+    gradient: 'from-celestial/30 via-purple-soft/20 to-saffron/20',
+    icon: 'M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z',
+  },
+  {
+    title: 'Om Mandala',
+    price: '$350',
+    description: 'An intricate hand-drawn mandala centered around the sacred Om symbol.',
+    gradient: 'from-saffron/30 via-gold-light/20 to-amber/30',
+    icon: 'M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15',
+  },
+  {
+    title: 'River of Devotion',
+    price: '$220',
+    description: 'A flowing composition depicting the sacred rivers and spiritual devotion.',
+    gradient: 'from-celestial/30 via-cosmic-light/20 to-royal/30',
+    icon: 'M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z',
+  },
+  {
+    title: 'Flute Song',
+    price: '$290',
+    description: 'Krishna\'s flute melody visualized through flowing colors and divine energy.',
+    gradient: 'from-royal/30 via-purple-soft/20 to-celestial/30',
+    icon: 'M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3',
   },
 ];
 ---
@@ -46,6 +79,7 @@ const paintings = [
       <h1 class="text-5xl md:text-6xl font-display font-bold text-gradient-gold mb-6">Art Gallery</h1>
       <p class="font-serif text-xl text-cream/80 italic">Hand-drawn paintings celebrating Dharmic art and tradition</p>
       <div class="gold-divider"></div>
+      <p class="text-cream/50 text-sm mt-4">{paintings.length} original artworks available</p>
     </div>
   </section>
 
@@ -62,24 +96,47 @@ const paintings = [
 
       <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {paintings.map((painting, index) => (
-          <div class="card-dark group hover:border-saffron/40 transition-all duration-300">
-            <!-- Placeholder for painting image -->
-            <div class="w-full h-72 rounded-lg mb-4 bg-gradient-to-br from-cosmic-light to-royal/20 border border-saffron/10 flex items-center justify-center overflow-hidden">
-              <div class="text-center">
-                <svg class="w-16 h-16 text-saffron/30 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          <div class="card-dark group hover:border-saffron/40 transition-all duration-300 hover:-translate-y-1">
+            <!-- Placeholder artwork -->
+            <div
+              class={`w-full h-72 rounded-lg mb-4 bg-gradient-to-br ${painting.gradient} border border-saffron/10 flex items-center justify-center overflow-hidden relative cursor-pointer`}
+              data-gallery-item
+              data-title={painting.title}
+              data-price={painting.price}
+              data-description={painting.description}
+            >
+              <!-- Decorative background pattern -->
+              <div class="absolute inset-0 opacity-10">
+                <div class="absolute top-4 left-4 w-32 h-32 border border-saffron/30 rounded-full"></div>
+                <div class="absolute bottom-4 right-4 w-24 h-24 border border-saffron/20 rounded-full"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 border border-saffron/20 rounded-full"></div>
+              </div>
+
+              <div class="text-center relative z-10 group-hover:scale-110 transition-transform duration-500">
+                <svg class="w-20 h-20 text-saffron/40 mx-auto mb-3 group-hover:text-saffron/60 transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d={painting.icon} />
                 </svg>
-                <p class="text-cream/20 text-xs">Painting #{index + 1}</p>
+                <p class="text-cream/30 text-xs font-display tracking-widest uppercase group-hover:text-cream/50 transition-colors">Artwork {index + 1}</p>
+              </div>
+
+              <!-- Hover overlay -->
+              <div class="absolute inset-0 bg-cosmic/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                <div class="text-center">
+                  <svg class="w-10 h-10 text-saffron mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                  </svg>
+                  <p class="text-cream/80 text-sm">View Details</p>
+                </div>
               </div>
             </div>
 
             <div class="flex items-start justify-between mb-2">
               <h3 class="text-saffron font-semibold">{painting.title}</h3>
-              <span class="text-gold-light font-display font-bold text-lg">{painting.price}</span>
+              <span class="text-gold-light font-display font-bold text-lg ml-2 whitespace-nowrap">{painting.price}</span>
             </div>
             <p class="text-cream/50 text-sm leading-relaxed mb-4">{painting.description}</p>
             <a
-              href="mailto:info@the18stepsusa.org?subject=Inquiry about painting: {painting.title}"
+              href={`mailto:info@the18stepsusa.org?subject=Inquiry about painting: ${painting.title}&body=Hi, I am interested in purchasing "${painting.title}" (${painting.price}). Please share more details.`}
               class="btn-outline text-xs text-center py-2 px-4 block"
             >
               Contact for Purchase
@@ -88,13 +145,36 @@ const paintings = [
         ))}
       </div>
 
-      <div class="text-center mt-16">
+      <div class="text-center mt-16 space-y-4">
         <p class="text-cream/50 text-sm">
           Interested in commissioning a custom piece? <a href="mailto:info@the18stepsusa.org" class="text-saffron hover:underline">Contact us</a>
+        </p>
+        <p class="text-cream/30 text-xs italic">
+          * Actual painting images will be updated soon. Placeholders shown above.
         </p>
       </div>
     </div>
   </section>
+
+  <!-- ===== LIGHTBOX MODAL ===== -->
+  <div id="lightbox" class="fixed inset-0 z-50 hidden items-center justify-center bg-cosmic/90 backdrop-blur-md p-4">
+    <div class="max-w-lg w-full card-dark relative animate-slide-up">
+      <button id="lightbox-close" class="absolute top-4 right-4 text-cream/60 hover:text-saffron transition-colors" aria-label="Close">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="w-full h-56 rounded-lg mb-6 bg-gradient-to-br from-saffron/20 via-royal/10 to-cosmic-light/30 border border-saffron/10 flex items-center justify-center">
+        <p class="text-cream/30 text-sm font-display tracking-wider">Artwork Preview</p>
+      </div>
+      <h3 id="lightbox-title" class="text-saffron font-display text-2xl font-semibold mb-1"></h3>
+      <p id="lightbox-price" class="text-gold-light font-display font-bold text-xl mb-4"></p>
+      <p id="lightbox-desc" class="text-cream/60 text-sm leading-relaxed mb-6"></p>
+      <a id="lightbox-contact" href="#" class="btn-primary text-sm text-center block">
+        Contact for Purchase
+      </a>
+    </div>
+  </div>
 
   <!-- ===== CTA ===== -->
   <section class="py-24 bg-gradient-to-b from-cosmic to-cosmic-light/20 relative">
@@ -113,3 +193,41 @@ const paintings = [
   </section>
 
 </Layout>
+
+<script>
+  const lightbox = document.getElementById('lightbox');
+  const lightboxTitle = document.getElementById('lightbox-title');
+  const lightboxPrice = document.getElementById('lightbox-price');
+  const lightboxDesc = document.getElementById('lightbox-desc');
+  const lightboxContact = document.getElementById('lightbox-contact') as HTMLAnchorElement;
+  const lightboxClose = document.getElementById('lightbox-close');
+
+  document.querySelectorAll('[data-gallery-item]').forEach(item => {
+    item.addEventListener('click', () => {
+      const title = item.getAttribute('data-title') || '';
+      const price = item.getAttribute('data-price') || '';
+      const desc = item.getAttribute('data-description') || '';
+
+      if (lightboxTitle) lightboxTitle.textContent = title;
+      if (lightboxPrice) lightboxPrice.textContent = price;
+      if (lightboxDesc) lightboxDesc.textContent = desc;
+      if (lightboxContact) {
+        lightboxContact.href = `mailto:info@the18stepsusa.org?subject=Inquiry about painting: ${title}&body=Hi, I am interested in purchasing "${title}" (${price}). Please share more details.`;
+      }
+      lightbox?.classList.remove('hidden');
+      lightbox?.classList.add('flex');
+    });
+  });
+
+  lightboxClose?.addEventListener('click', () => {
+    lightbox?.classList.add('hidden');
+    lightbox?.classList.remove('flex');
+  });
+
+  lightbox?.addEventListener('click', (e) => {
+    if (e.target === lightbox) {
+      lightbox.classList.add('hidden');
+      lightbox.classList.remove('flex');
+    }
+  });
+</script>
