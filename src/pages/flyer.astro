@@ -151,10 +151,9 @@ const base = import.meta.env.BASE_URL;
         font-size: 12px; font-weight: 700; letter-spacing: 0.18em;
       }
       .activity-card {
-        background: linear-gradient(135deg, rgba(26,26,78,0.5), rgba(13,13,43,0.7));
-        border: 1px solid rgba(212,160,23,0.12);
-        border-left: 2px solid rgba(212,160,23,0.45);
-        border-radius: 3px; padding: 7px 9px; margin-bottom: 5px; text-align: left;
+        background: none; border: none;
+        border-left: 2px solid rgba(212,160,23,0.35);
+        padding: 5px 0 5px 10px; margin-bottom: 4px; text-align: left;
       }
       .activity-card .day {
         font-family: 'Cinzel', serif; color: #d4a017;
@@ -169,9 +168,11 @@ const base = import.meta.env.BASE_URL;
       }
       .soon-tags { display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; }
       .soon-tag {
-        background: linear-gradient(135deg, rgba(212,160,23,0.08), rgba(212,160,23,0.02));
-        border: 1px solid rgba(212,160,23,0.2); padding: 3px 8px;
-        font-size: 6.5px; color: #f0c040; letter-spacing: 0.05em; border-radius: 2px;
+        background: none; border: none; padding: 0;
+        font-size: 6.5px; color: #f0c040; letter-spacing: 0.05em;
+      }
+      .soon-tags .soon-tag:not(:last-child)::after {
+        content: '·'; margin-left: 5px; color: rgba(212,160,23,0.4);
       }
       .np-note {
         font-size: 5.5px; color: rgba(245,240,232,0.28); line-height: 1.4; margin-top: 8px;
@@ -351,17 +352,18 @@ const base = import.meta.env.BASE_URL;
         line-height: 1.6; text-align: justify;
       }
       .guest-works {
-        display: flex; gap: 8px; justify-content: center;
-        align-items: flex-end; margin-top: 6px;
+        display: flex; gap: 10px; justify-content: center;
+        align-items: flex-end; margin-top: 8px; flex: 1;
       }
-      .gw-item { text-align: center; }
+      .gw-item { text-align: center; flex: 1; display: flex; flex-direction: column; align-items: center; }
       .gw-img {
-        border-radius: 3px; border: 1px solid rgba(212,160,23,0.2);
-        object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.35);
+        border-radius: 4px; border: 1.5px solid rgba(212,160,23,0.3);
+        object-fit: cover; box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        width: 100%; max-width: 120px;
       }
       .gw-cap {
-        font-size: 5px; color: rgba(245,240,232,0.35);
-        margin-top: 2px; font-style: italic;
+        font-size: 5.5px; color: rgba(245,240,232,0.4);
+        margin-top: 3px; font-style: italic;
       }
 
       /* ============================================
@@ -398,7 +400,7 @@ const base = import.meta.env.BASE_URL;
         position: relative; height: 180px; margin-top: auto;
       }
       .venue-full-grid {
-        display: grid; grid-template-columns: 1fr 1fr; height: 100%;
+        height: 100%;
       }
       .venue-full-grid img { width: 100%; height: 100%; object-fit: cover; }
       .venue-full-ov {
@@ -467,9 +469,8 @@ const base = import.meta.env.BASE_URL;
 
       .sl-sec {
         display: flex; align-items: center; gap: 8px;
-        background: linear-gradient(135deg, rgba(26,26,78,0.4), rgba(13,13,43,0.6));
-        border: 1px solid rgba(212,160,23,0.1); border-radius: 4px;
-        padding: 6px 8px; margin-top: 8px;
+        background: none; border: none;
+        padding: 6px 0; margin-top: 8px;
       }
       .sl-img {
         width: 38px; height: 38px; border-radius: 50%;
@@ -488,15 +489,9 @@ const base = import.meta.env.BASE_URL;
       }
 
       .rsvp-box {
-        background: linear-gradient(135deg, rgba(212,160,23,0.1), rgba(74,32,128,0.06));
-        border: 1px solid rgba(212,160,23,0.28); border-radius: 4px;
-        padding: 8px 10px; margin-top: auto; text-align: center;
-        position: relative; overflow: hidden;
-      }
-      .rsvp-box::before {
-        content: ''; position: absolute; inset: 0;
-        background: radial-gradient(circle at 50% 50%, rgba(212,160,23,0.05) 0%, transparent 70%);
-        pointer-events: none;
+        background: none; border: none;
+        padding: 8px 0; margin-top: auto; text-align: center;
+        position: relative;
       }
       .rsvp-box .rt {
         font-family: 'Cinzel', serif; color: #d4a017;
@@ -761,11 +756,11 @@ const base = import.meta.env.BASE_URL;
 
             <div class="guest-works">
               <div class="gw-item">
-                <img src={`${base}/images/flyer/flyer-007.jpg`} alt="Krishna's Whisper" class="gw-img" style="height:68px;"/>
+                <img src={`${base}/images/flyer/flyer-007.jpg`} alt="Krishna's Whisper" class="gw-img" style="height:110px;"/>
                 <p class="gw-cap">Krishna's Whisper</p>
               </div>
               <div class="gw-item">
-                <img src={`${base}/images/flyer/flyer-009.jpg`} alt="Akhilam Madhuram" class="gw-img" style="height:48px;"/>
+                <img src={`${base}/images/flyer/flyer-009.jpg`} alt="Akhilam Madhuram" class="gw-img" style="height:80px;"/>
                 <p class="gw-cap">Akhilam Madhuram</p>
               </div>
             </div>
@@ -819,7 +814,6 @@ const base = import.meta.env.BASE_URL;
           <!-- Large venue images -->
           <div class="venue-full">
             <div class="venue-full-grid">
-              <img src={`${base}/images/flyer/flyer-001.jpg`} alt="Venue Exterior"/>
               <img src={`${base}/images/flyer/flyer-000.jpg`} alt="Venue Interior"/>
             </div>
             <div class="venue-full-ov">
