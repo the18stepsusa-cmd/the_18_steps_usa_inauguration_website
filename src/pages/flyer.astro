@@ -1,0 +1,904 @@
+---
+import '../styles/global.css';
+const base = import.meta.env.BASE_URL;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tri-Fold Flyer - The 18 Steps USA</title>
+    <link rel="icon" type="image/jpeg" href={`${base}/images/aesthetic/the_18_steps_logo.jpg`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet" />
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
+        background: #0d0d2b;
+        color: #f5f0e8;
+      }
+
+      /* ===== CONTROLS ===== */
+      .screen-controls {
+        position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+        background: rgba(13,13,43,0.97);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(212,160,23,0.3);
+        padding: 12px 24px;
+        display: flex; align-items: center; justify-content: space-between;
+      }
+      .screen-controls h1 { font-family: 'Cinzel', serif; color: #d4a017; font-size: 14px; letter-spacing: 0.1em; }
+      .screen-controls .btn-group { display: flex; gap: 8px; }
+      .screen-controls button, .screen-controls a.ctrl-link {
+        padding: 6px 16px; border: 1px solid rgba(212,160,23,0.4);
+        background: transparent; color: #d4a017;
+        font-family: 'Inter', sans-serif; font-size: 12px;
+        cursor: pointer; transition: all 0.2s; letter-spacing: 0.05em;
+        text-decoration: none; display: inline-flex; align-items: center;
+      }
+      .screen-controls button:hover, .screen-controls button.active,
+      .screen-controls a.ctrl-link:hover { background: #d4a017; color: #0d0d2b; }
+
+      .screen-label {
+        text-align: center; font-family: 'Cinzel', serif;
+        color: rgba(212,160,23,0.4); font-size: 11px;
+        letter-spacing: 0.2em; margin: 10px 0 20px;
+      }
+      .back-to-site { text-align: center; margin: 30px 0 60px; }
+      .back-to-site a {
+        color: #d4a017; font-size: 12px; text-decoration: none;
+        border: 1px solid rgba(212,160,23,0.3); padding: 8px 24px;
+        transition: all 0.2s; font-family: 'Inter', sans-serif; letter-spacing: 0.05em;
+      }
+      .back-to-site a:hover { background: #d4a017; color: #0d0d2b; }
+
+      /* ===== FLYER ===== */
+      .flyer-page {
+        width: 11in; height: 8.5in;
+        position: relative; overflow: hidden;
+        margin: 80px auto 40px;
+        box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+        background: #0d0d2b;
+      }
+      .panels {
+        display: grid; grid-template-columns: 1fr 1fr 1fr;
+        height: 100%; width: 100%;
+      }
+      .panel {
+        position: relative; overflow: hidden;
+        display: flex; flex-direction: column;
+      }
+      .panels .panel:not(:last-child) {
+        border-right: 1px dashed rgba(212,160,23,0.1);
+      }
+
+      /* ===== SHARED DECORATIVES ===== */
+      .corner-orn {
+        position: absolute; width: 28px; height: 28px; pointer-events: none; z-index: 5;
+      }
+      .corner-orn.tl { top: 6px; left: 6px; }
+      .corner-orn.tr { top: 6px; right: 6px; transform: scaleX(-1); }
+      .corner-orn.bl { bottom: 6px; left: 6px; transform: scaleY(-1); }
+      .corner-orn.br { bottom: 6px; right: 6px; transform: scale(-1,-1); }
+
+      .mandala-bg {
+        position: absolute; pointer-events: none; opacity: 0.045;
+      }
+      .mandala-ring { fill: none; stroke: #d4a017; stroke-width: 0.5; }
+      .mandala-ring-thick { fill: none; stroke: #d4a017; stroke-width: 1; }
+
+      .lotus-div { display: block; margin: 0 auto; height: 10px; opacity: 0.55; }
+      .gold-line {
+        width: 60px; height: 1px;
+        background: linear-gradient(to right, transparent, #d4a017, transparent);
+        margin: 6px auto;
+      }
+      .gold-line-w {
+        width: 85%; height: 1px;
+        background: linear-gradient(to right, transparent, rgba(212,160,23,0.35), rgba(212,160,23,0.6), rgba(212,160,23,0.35), transparent);
+        margin: 8px auto;
+      }
+
+      /* Dots overlay */
+      .dots-ov {
+        position: absolute; inset: 0; pointer-events: none;
+        background-image: radial-gradient(rgba(212,160,23,0.05) 1px, transparent 1px);
+        background-size: 14px 14px;
+      }
+      /* Concentric rings overlay */
+      .rings-ov {
+        position: absolute; inset: 0; pointer-events: none;
+        background:
+          radial-gradient(circle at 50% 50%, transparent 28%, rgba(212,160,23,0.015) 28.5%, transparent 29%),
+          radial-gradient(circle at 50% 50%, transparent 42%, rgba(212,160,23,0.012) 42.5%, transparent 43%),
+          radial-gradient(circle at 50% 50%, transparent 56%, rgba(212,160,23,0.01) 56.5%, transparent 57%),
+          radial-gradient(circle at 50% 50%, transparent 70%, rgba(212,160,23,0.008) 70.5%, transparent 71%);
+      }
+      /* Diamond lattice */
+      .lattice-ov {
+        position: absolute; inset: 0; pointer-events: none;
+        background:
+          linear-gradient(45deg, rgba(212,160,23,0.02) 25%, transparent 25%),
+          linear-gradient(-45deg, rgba(212,160,23,0.02) 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, rgba(212,160,23,0.02) 75%),
+          linear-gradient(-45deg, transparent 75%, rgba(212,160,23,0.02) 75%);
+        background-size: 20px 20px;
+        background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+      }
+      /* Border glow strip */
+      .border-glow-l {
+        position: absolute; top: 0; bottom: 0; right: 0; width: 1px; pointer-events: none;
+        background: linear-gradient(180deg, transparent, rgba(212,160,23,0.15), rgba(212,160,23,0.3), rgba(212,160,23,0.15), transparent);
+      }
+      .border-glow-t {
+        position: absolute; top: 0; left: 0; right: 0; height: 1px; pointer-events: none;
+        background: linear-gradient(90deg, transparent, rgba(212,160,23,0.2), transparent);
+      }
+
+      /* ============================================
+         OUTSIDE — PANEL 1: BACK FLAP
+         ============================================ */
+      .out-flap {
+        background: linear-gradient(170deg, #0e0e32 0%, #0d0d2b 100%);
+        padding: 0.3in 0.25in;
+        justify-content: space-between;
+        text-align: center;
+      }
+      .flap-title {
+        font-family: 'Cinzel', serif; color: #d4a017;
+        font-size: 12px; font-weight: 700; letter-spacing: 0.18em;
+      }
+      .activity-card {
+        background: linear-gradient(135deg, rgba(26,26,78,0.5), rgba(13,13,43,0.7));
+        border: 1px solid rgba(212,160,23,0.12);
+        border-left: 2px solid rgba(212,160,23,0.45);
+        border-radius: 3px; padding: 7px 9px; margin-bottom: 5px; text-align: left;
+      }
+      .activity-card .day {
+        font-family: 'Cinzel', serif; color: #d4a017;
+        font-size: 7px; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 1px;
+      }
+      .activity-card .desc {
+        color: rgba(245,240,232,0.75); font-size: 7px; line-height: 1.4;
+      }
+      .soon-label {
+        font-family: 'Cinzel', serif; color: #f0c040;
+        font-size: 9px; font-weight: 600; letter-spacing: 0.12em; margin-bottom: 6px;
+      }
+      .soon-tags { display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; }
+      .soon-tag {
+        background: linear-gradient(135deg, rgba(212,160,23,0.08), rgba(212,160,23,0.02));
+        border: 1px solid rgba(212,160,23,0.2); padding: 3px 8px;
+        font-size: 6.5px; color: #f0c040; letter-spacing: 0.05em; border-radius: 2px;
+      }
+      .np-note {
+        font-size: 5.5px; color: rgba(245,240,232,0.28); line-height: 1.4; margin-top: 8px;
+      }
+
+      /* ============================================
+         OUTSIDE — PANEL 2: BACK COVER
+         ============================================ */
+      .out-back { padding: 0.3in 0.25in; }
+      .don-title {
+        font-family: 'Cinzel', serif; color: #d4a017;
+        font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-align: center;
+      }
+      .don-note {
+        font-size: 7px; color: rgba(245,240,232,0.5);
+        font-family: 'Playfair Display', Georgia, serif; font-style: italic;
+        text-align: center; line-height: 1.5; margin: 6px 0 10px;
+      }
+      .don-row {
+        display: flex; align-items: center; gap: 8px;
+        padding: 6px 0; border-bottom: 1px solid rgba(212,160,23,0.07);
+      }
+      .don-icon {
+        width: 16px; height: 16px; border-radius: 50%;
+        background: rgba(212,160,23,0.08); border: 1px solid rgba(212,160,23,0.2);
+        display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      }
+      .don-icon svg { width: 8px; height: 8px; }
+      .don-label {
+        font-family: 'Cinzel', serif; font-size: 6.5px;
+        color: #d4a017; font-weight: 700; letter-spacing: 0.08em; min-width: 42px;
+      }
+      .don-val { font-size: 7px; color: rgba(245,240,232,0.8); }
+      .contact-title {
+        font-family: 'Cinzel', serif; color: #d4a017;
+        font-size: 9px; font-weight: 700; letter-spacing: 0.15em;
+        text-align: center; margin-bottom: 8px;
+      }
+      .contact-row {
+        font-size: 6.5px; color: rgba(245,240,232,0.6);
+        margin-bottom: 3px; text-align: center;
+      }
+      .contact-row strong { color: rgba(245,240,232,0.85); }
+
+      /* ============================================
+         OUTSIDE — PANEL 3: FRONT COVER
+         ============================================ */
+      .out-front {
+        background:
+          radial-gradient(ellipse at 50% 35%, rgba(74,32,128,0.12) 0%, transparent 55%),
+          linear-gradient(180deg, #080820 0%, #0d0d2b 40%, #0f0f35 100%);
+        text-align: center;
+      }
+
+      /* Full-bleed venue exterior at top */
+      .front-venue-hero {
+        position: relative; height: 160px; margin: 0;
+        overflow: hidden;
+      }
+      .front-venue-hero img {
+        width: 100%; height: 100%; object-fit: cover;
+      }
+      .front-venue-hero-ov {
+        position: absolute; inset: 0;
+        background: linear-gradient(180deg,
+          rgba(8,8,32,0.3) 0%,
+          rgba(13,13,43,0.5) 50%,
+          rgba(13,13,43,0.97) 90%,
+          #0d0d2b 100%
+        );
+      }
+      .front-venue-hero .sanskrit-float {
+        position: absolute; bottom: 8px; left: 0; right: 0;
+        font-size: 5.5px; color: rgba(245,240,232,0.3);
+        line-height: 1.7; font-style: italic; text-align: center;
+      }
+
+      .front-body {
+        flex: 1; display: flex; flex-direction: column;
+        align-items: center; justify-content: center;
+        padding: 0 0.25in 0.2in; position: relative; z-index: 2;
+      }
+
+      .front-logo-wrap { position: relative; margin: 0 auto 4px; }
+      .front-logo-glow {
+        position: absolute; inset: -12px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(212,160,23,0.2) 0%, transparent 70%);
+      }
+      .front-logo {
+        width: 88px; height: 88px; border-radius: 50%;
+        border: 2.5px solid rgba(212,160,23,0.55); object-fit: cover;
+        position: relative; z-index: 1;
+        box-shadow: 0 0 35px rgba(212,160,23,0.2);
+      }
+
+      .front-title {
+        font-family: 'Cinzel', serif; font-size: 26px; font-weight: 800;
+        letter-spacing: 0.22em; line-height: 1.12; margin-top: 4px;
+        background: linear-gradient(135deg, #d4a017, #f0c040, #b8860b);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      }
+      .front-sub {
+        font-family: 'Cinzel', serif; color: #f0c040;
+        font-size: 13px; letter-spacing: 0.35em; opacity: 0.8;
+      }
+      .front-tag {
+        font-family: 'Playfair Display', Georgia, serif; font-style: italic;
+        color: rgba(245,240,232,0.6); font-size: 8px; margin-top: 4px;
+      }
+      .front-evt {
+        font-family: 'Cinzel', serif; color: #d4a017;
+        font-size: 10px; font-weight: 700; letter-spacing: 0.22em; margin-top: 2px;
+      }
+      .front-date {
+        font-family: 'Cinzel', serif; color: #f5f0e8;
+        font-size: 17px; font-weight: 700; letter-spacing: 0.06em; margin-top: 3px;
+      }
+      .front-day {
+        font-size: 7.5px; color: rgba(245,240,232,0.5); letter-spacing: 0.15em;
+      }
+      .front-ven {
+        margin-top: 6px; font-size: 7px; color: rgba(245,240,232,0.5); line-height: 1.5;
+      }
+      .front-ven strong {
+        color: #d4a017; font-family: 'Cinzel', serif;
+        font-size: 7.5px; display: block; letter-spacing: 0.06em;
+      }
+      .front-inv {
+        font-family: 'Playfair Display', Georgia, serif; font-style: italic;
+        color: rgba(245,240,232,0.4); font-size: 6.5px; margin-top: 8px; line-height: 1.6;
+      }
+
+      /* ============================================
+         INSIDE — PANEL 4: CHIEF GUEST
+         ============================================ */
+      .in-guest {
+        background: linear-gradient(180deg, #080820 0%, #0d0d2b 100%);
+      }
+      .guest-hero {
+        position: relative; height: 320px; overflow: hidden;
+      }
+      .guest-hero img {
+        width: 100%; height: 100%; object-fit: cover; object-position: top center;
+      }
+      .guest-hero-ov {
+        position: absolute; inset: 0;
+        background: linear-gradient(180deg,
+          rgba(8,8,32,0.05) 0%,
+          rgba(13,13,43,0.15) 40%,
+          rgba(13,13,43,0.7) 75%,
+          #0d0d2b 100%
+        );
+      }
+      .guest-badge {
+        position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+        font-family: 'Cinzel', serif; color: #d4a017;
+        font-size: 7px; font-weight: 700; letter-spacing: 0.25em;
+        background: rgba(13,13,43,0.6); backdrop-filter: blur(4px);
+        padding: 3px 12px; border: 1px solid rgba(212,160,23,0.3); border-radius: 2px; z-index: 3;
+      }
+      .guest-name-float {
+        position: absolute; bottom: 12px; left: 0; right: 0; text-align: center; z-index: 3;
+      }
+      .guest-name-float h3 {
+        font-family: 'Cinzel', serif; color: #f5f0e8;
+        font-size: 15px; font-weight: 700; letter-spacing: 0.08em;
+        text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+      }
+      .guest-name-float .sub {
+        font-family: 'Playfair Display', Georgia, serif; font-style: italic;
+        font-size: 7px; color: rgba(245,240,232,0.5); margin-top: 2px;
+      }
+
+      .guest-content { padding: 6px 0.25in 0.2in; position: relative; z-index: 2; }
+      .guest-bio {
+        font-size: 6.5px; color: rgba(245,240,232,0.72);
+        line-height: 1.6; text-align: justify;
+      }
+      .guest-works {
+        display: flex; gap: 8px; justify-content: center;
+        align-items: flex-end; margin-top: 6px;
+      }
+      .gw-item { text-align: center; }
+      .gw-img {
+        border-radius: 3px; border: 1px solid rgba(212,160,23,0.2);
+        object-fit: cover; box-shadow: 0 4px 15px rgba(0,0,0,0.35);
+      }
+      .gw-cap {
+        font-size: 5px; color: rgba(245,240,232,0.35);
+        margin-top: 2px; font-style: italic;
+      }
+
+      /* ============================================
+         INSIDE — PANEL 5: PROGRAM
+         ============================================ */
+      .in-prog { padding: 0; display: flex; flex-direction: column; }
+
+      .prog-top { padding: 0.25in 0.25in 0; flex: 1; position: relative; z-index: 2; }
+      .prog-title {
+        font-family: 'Cinzel', serif; color: #d4a017;
+        font-size: 15px; font-weight: 700; letter-spacing: 0.2em; text-align: center;
+      }
+      .prog-items { margin-top: 8px; }
+      .prog-row {
+        display: flex; align-items: center; padding: 5px 6px; border-radius: 2px;
+      }
+      .prog-row:nth-child(odd) { background: rgba(26,26,78,0.25); }
+      .prog-row .time {
+        font-family: 'Cinzel', serif; font-size: 6.5px;
+        color: #d4a017; font-weight: 700; min-width: 50px; letter-spacing: 0.03em;
+      }
+      .prog-row .dot {
+        width: 4px; height: 4px; border-radius: 50%;
+        background: rgba(212,160,23,0.25); margin: 0 6px; flex-shrink: 0;
+      }
+      .prog-row .evt {
+        font-size: 8px; color: rgba(245,240,232,0.85);
+      }
+      .prog-row.hl .evt { color: #f0c040; font-weight: 600; }
+      .prog-row.hl .dot { background: #d4a017; box-shadow: 0 0 6px rgba(212,160,23,0.4); }
+
+      /* Full-bleed venue at bottom */
+      .venue-full {
+        position: relative; height: 180px; margin-top: auto;
+      }
+      .venue-full-grid {
+        display: grid; grid-template-columns: 1fr 1fr; height: 100%;
+      }
+      .venue-full-grid img { width: 100%; height: 100%; object-fit: cover; }
+      .venue-full-ov {
+        position: absolute; inset: 0;
+        background: linear-gradient(0deg,
+          rgba(13,13,43,0.9) 0%,
+          rgba(13,13,43,0.45) 40%,
+          rgba(13,13,43,0.15) 100%
+        );
+        display: flex; flex-direction: column; justify-content: flex-end;
+        padding: 0 14px 12px; text-align: center;
+      }
+      .ven-label {
+        font-family: 'Cinzel', serif; font-size: 8px;
+        color: #d4a017; letter-spacing: 0.15em; font-weight: 700;
+      }
+      .ven-name {
+        font-family: 'Cinzel', serif; font-size: 7px;
+        color: rgba(245,240,232,0.8); letter-spacing: 0.06em; margin-top: 2px;
+      }
+      .ven-addr { font-size: 6px; color: rgba(245,240,232,0.5); margin-top: 1px; }
+
+      /* ============================================
+         INSIDE — PANEL 6: CHAAYAMUKHI
+         ============================================ */
+      .in-chaaya {
+        background: linear-gradient(180deg, #080820 0%, #0d0d2b 100%);
+      }
+      .chaaya-hero {
+        position: relative; height: 300px; overflow: hidden;
+      }
+      .chaaya-hero img {
+        width: 100%; height: 100%; object-fit: cover; object-position: top center;
+      }
+      .chaaya-hero-ov {
+        position: absolute; inset: 0;
+        background: linear-gradient(180deg,
+          rgba(8,8,32,0.05) 0%,
+          rgba(13,13,43,0.15) 40%,
+          rgba(13,13,43,0.7) 75%,
+          #0d0d2b 100%
+        );
+      }
+      .chaaya-text-float {
+        position: absolute; bottom: 8px; left: 0; right: 0; text-align: center; z-index: 3;
+      }
+      .chaaya-pre {
+        font-family: 'Cinzel', serif; color: #d4a017;
+        font-size: 7px; letter-spacing: 0.28em; font-weight: 600;
+      }
+      .chaaya-t {
+        font-family: 'Playfair Display', Georgia, serif; color: #f5f0e8;
+        font-size: 26px; font-weight: 700; font-style: italic;
+        letter-spacing: 0.04em; text-shadow: 0 3px 20px rgba(0,0,0,0.6);
+      }
+      .chaaya-st {
+        font-family: 'Playfair Display', Georgia, serif; font-style: italic;
+        color: rgba(245,240,232,0.5); font-size: 8px;
+      }
+
+      .chaaya-content { padding: 6px 0.25in 0.2in; position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; }
+      .chaaya-desc {
+        font-size: 7px; color: rgba(245,240,232,0.65);
+        line-height: 1.55; text-align: center; padding: 0 2px;
+      }
+
+      .sl-sec {
+        display: flex; align-items: center; gap: 8px;
+        background: linear-gradient(135deg, rgba(26,26,78,0.4), rgba(13,13,43,0.6));
+        border: 1px solid rgba(212,160,23,0.1); border-radius: 4px;
+        padding: 6px 8px; margin-top: 8px;
+      }
+      .sl-img {
+        width: 38px; height: 38px; border-radius: 50%;
+        object-fit: cover; border: 1px solid rgba(212,160,23,0.25); flex-shrink: 0;
+      }
+      .sl-text { text-align: left; }
+      .sl-text .n {
+        font-family: 'Playfair Display', Georgia, serif;
+        color: #d4a017; font-size: 8px; font-weight: 600;
+      }
+      .sl-text .tl {
+        font-size: 5.5px; color: rgba(245,240,232,0.4); font-style: italic;
+      }
+      .sl-text .d {
+        font-size: 6px; color: rgba(245,240,232,0.5); line-height: 1.4; margin-top: 1px;
+      }
+
+      .rsvp-box {
+        background: linear-gradient(135deg, rgba(212,160,23,0.1), rgba(74,32,128,0.06));
+        border: 1px solid rgba(212,160,23,0.28); border-radius: 4px;
+        padding: 8px 10px; margin-top: auto; text-align: center;
+        position: relative; overflow: hidden;
+      }
+      .rsvp-box::before {
+        content: ''; position: absolute; inset: 0;
+        background: radial-gradient(circle at 50% 50%, rgba(212,160,23,0.05) 0%, transparent 70%);
+        pointer-events: none;
+      }
+      .rsvp-box .rt {
+        font-family: 'Cinzel', serif; color: #d4a017;
+        font-size: 9px; font-weight: 700; letter-spacing: 0.18em;
+        margin-bottom: 3px; position: relative;
+      }
+      .rsvp-box .rd {
+        font-size: 6px; color: rgba(245,240,232,0.55); line-height: 1.5;
+        font-family: 'Playfair Display', Georgia, serif; font-style: italic;
+        position: relative;
+      }
+
+      /* ===== PRINT ===== */
+      @media print {
+        .screen-controls, .screen-label, .back-to-site { display: none !important; }
+        body { background: white; margin: 0; padding: 0; }
+        .flyer-page {
+          margin: 0; box-shadow: none; page-break-after: always;
+          -webkit-print-color-adjust: exact; print-color-adjust: exact;
+        }
+        @page { size: 11in 8.5in landscape; margin: 0; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="screen-controls">
+      <h1>TRI-FOLD FLYER PREVIEW</h1>
+      <div class="btn-group">
+        <button id="btn-both" class="active" onclick="showView('both')">Both Sides</button>
+        <button id="btn-outside" onclick="showView('outside')">Outside</button>
+        <button id="btn-inside" onclick="showView('inside')">Inside</button>
+        <button onclick="window.print()">Print / Save PDF</button>
+        <a href={`${base}/`} class="ctrl-link">Back to Site</a>
+      </div>
+    </div>
+
+    <!-- SVG defs -->
+    <svg style="position:absolute;width:0;height:0;" aria-hidden="true">
+      <defs>
+        <symbol id="co" viewBox="0 0 28 28">
+          <path d="M2 26 L2 7 Q2 2 7 2 L26 2" fill="none" stroke="#d4a017" stroke-width="0.7" opacity="0.3"/>
+          <path d="M2 20 L2 11 Q2 5 7 5" fill="none" stroke="#d4a017" stroke-width="0.4" opacity="0.18"/>
+          <circle cx="4.5" cy="4.5" r="1.2" fill="#d4a017" opacity="0.18"/>
+        </symbol>
+        <symbol id="ld" viewBox="0 0 100 10">
+          <line x1="0" y1="5" x2="28" y2="5" stroke="#d4a017" stroke-width="0.4" opacity="0.35"/>
+          <line x1="72" y1="5" x2="100" y2="5" stroke="#d4a017" stroke-width="0.4" opacity="0.35"/>
+          <path d="M50 1 Q44 5 50 9 Q56 5 50 1Z" fill="none" stroke="#d4a017" stroke-width="0.5" opacity="0.45"/>
+          <path d="M50 3 Q42 5 50 7 Q58 5 50 3Z" fill="none" stroke="#d4a017" stroke-width="0.4" opacity="0.25"/>
+          <circle cx="33" cy="5" r="0.8" fill="#d4a017" opacity="0.2"/>
+          <circle cx="67" cy="5" r="0.8" fill="#d4a017" opacity="0.2"/>
+          <path d="M42 5 Q50 1.5 58 5" fill="none" stroke="#d4a017" stroke-width="0.3" opacity="0.2"/>
+          <path d="M42 5 Q50 8.5 58 5" fill="none" stroke="#d4a017" stroke-width="0.3" opacity="0.2"/>
+        </symbol>
+        <symbol id="mr" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="96" fill="none" stroke="#d4a017" stroke-width="0.4" opacity="0.5"/>
+          <circle cx="100" cy="100" r="82" fill="none" stroke="#d4a017" stroke-width="0.35" opacity="0.35"/>
+          <circle cx="100" cy="100" r="68" fill="none" stroke="#d4a017" stroke-width="0.3" opacity="0.25"/>
+          <circle cx="100" cy="100" r="54" fill="none" stroke="#d4a017" stroke-width="0.25" opacity="0.2"/>
+          <circle cx="100" cy="100" r="40" fill="none" stroke="#d4a017" stroke-width="0.5" opacity="0.15"/>
+          <line x1="100" y1="4" x2="100" y2="196" stroke="#d4a017" stroke-width="0.3" opacity="0.08"/>
+          <line x1="4" y1="100" x2="196" y2="100" stroke="#d4a017" stroke-width="0.3" opacity="0.08"/>
+          <line x1="18" y1="18" x2="182" y2="182" stroke="#d4a017" stroke-width="0.25" opacity="0.06"/>
+          <line x1="182" y1="18" x2="18" y2="182" stroke="#d4a017" stroke-width="0.25" opacity="0.06"/>
+          <!-- 8 petal shapes -->
+          <path d="M100 15 Q112 48 100 62 Q88 48 100 15Z" fill="#d4a017" opacity="0.04"/>
+          <path d="M100 185 Q112 152 100 138 Q88 152 100 185Z" fill="#d4a017" opacity="0.04"/>
+          <path d="M15 100 Q48 112 62 100 Q48 88 15 100Z" fill="#d4a017" opacity="0.04"/>
+          <path d="M185 100 Q152 112 138 100 Q152 88 185 100Z" fill="#d4a017" opacity="0.04"/>
+          <path d="M28 28 Q55 48 62 62 Q48 55 28 28Z" fill="#d4a017" opacity="0.025"/>
+          <path d="M172 28 Q145 48 138 62 Q152 55 172 28Z" fill="#d4a017" opacity="0.025"/>
+          <path d="M28 172 Q55 152 62 138 Q48 145 28 172Z" fill="#d4a017" opacity="0.025"/>
+          <path d="M172 172 Q145 152 138 138 Q152 145 172 172Z" fill="#d4a017" opacity="0.025"/>
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- =========== OUTSIDE =========== -->
+    <p class="screen-label">OUTSIDE &mdash; Back Flap (left) &bull; Back Cover (middle) &bull; Front Cover (right)</p>
+
+    <div class="flyer-page outside" id="page-outside">
+      <div class="panels">
+
+        <!-- PANEL 1: Back Flap -->
+        <div class="panel out-flap">
+          <svg class="mandala-bg" style="width:280px;height:280px;top:50%;left:50%;transform:translate(-50%,-50%)"><use href="#mr"/></svg>
+          <div class="dots-ov"></div>
+          <div class="lattice-ov" style="opacity:0.5"></div>
+          <svg class="corner-orn tl"><use href="#co"/></svg>
+          <svg class="corner-orn tr"><use href="#co"/></svg>
+          <svg class="corner-orn bl"><use href="#co"/></svg>
+          <svg class="corner-orn br"><use href="#co"/></svg>
+          <div class="border-glow-l"></div>
+
+          <div style="position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;">
+            <div class="flap-title">ONGOING ACTIVITIES</div>
+            <svg class="lotus-div" style="margin:6px auto 12px;"><use href="#ld"/></svg>
+
+            <div class="activity-card">
+              <div class="day">EVERY THURSDAY</div>
+              <div class="desc">Nama Japam (led by children)</div>
+            </div>
+            <div class="activity-card">
+              <div class="day">2ND &amp; 3RD SATURDAYS</div>
+              <div class="desc">Narayaneeyam: Guided Parayanam Class</div>
+            </div>
+            <div class="activity-card">
+              <div class="day">1ST &amp; 4TH SATURDAYS</div>
+              <div class="desc">Narayaneeyam: Moderator-led Discussion Group</div>
+            </div>
+
+            <div class="gold-line-w" style="margin:14px auto 10px;"></div>
+
+            <div class="soon-label">STARTING SOON</div>
+            <div class="soon-tags">
+              <span class="soon-tag">Vedic Mathematics</span>
+              <span class="soon-tag">Malayalam</span>
+              <span class="soon-tag">Kids Yoga</span>
+            </div>
+          </div>
+
+          <p class="np-note" style="position:relative;z-index:2;">
+            The 18 Steps USA is a Nonprofit Corporation<br/>registered in the Commonwealth of Pennsylvania
+          </p>
+        </div>
+
+        <!-- PANEL 2: Back Cover -->
+        <div class="panel out-back">
+          <svg class="mandala-bg" style="width:220px;height:220px;top:-40px;right:-40px;"><use href="#mr"/></svg>
+          <svg class="mandala-bg" style="width:180px;height:180px;bottom:-30px;left:-30px;opacity:0.03;"><use href="#mr"/></svg>
+          <div class="rings-ov"></div>
+          <div class="lattice-ov" style="opacity:0.4;"></div>
+          <svg class="corner-orn tl"><use href="#co"/></svg>
+          <svg class="corner-orn tr"><use href="#co"/></svg>
+          <svg class="corner-orn bl"><use href="#co"/></svg>
+          <svg class="corner-orn br"><use href="#co"/></svg>
+          <div class="border-glow-l"></div>
+
+          <div style="position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;padding:0.3in 0.25in;">
+            <div class="don-title">SUPPORT THE CAUSE</div>
+            <svg class="lotus-div" style="margin:5px auto 0;"><use href="#ld"/></svg>
+            <p class="don-note">
+              Contributions are completely voluntary &mdash;<br/>
+              your presence and support mean the most to us!
+            </p>
+
+            <div>
+              <div class="don-row">
+                <div class="don-icon"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#d4a017" stroke-width="1"/><path d="M8 4v8M5 7h6" stroke="#d4a017" stroke-width="0.8"/></svg></div>
+                <span class="don-label">ZEFFY</span>
+                <span class="don-val">Secure donation online</span>
+              </div>
+              <div class="don-row">
+                <div class="don-icon"><svg viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="8" rx="1" stroke="#d4a017" stroke-width="0.8"/><path d="M2 7h12" stroke="#d4a017" stroke-width="0.5"/></svg></div>
+                <span class="don-label">CHECKS</span>
+                <span class="don-val">Payable to: The 18 Steps USA</span>
+              </div>
+              <div class="don-row">
+                <div class="don-icon"><svg viewBox="0 0 16 16" fill="none"><path d="M3 3l4 10L9 8l5 2" stroke="#d4a017" stroke-width="0.8" stroke-linecap="round"/></svg></div>
+                <span class="don-label">VENMO</span>
+                <span class="don-val">@the18stepsusa</span>
+              </div>
+              <div class="don-row">
+                <div class="don-icon"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="5" stroke="#d4a017" stroke-width="0.8"/><path d="M6 6h4l-3 4h4" stroke="#d4a017" stroke-width="0.8"/></svg></div>
+                <span class="don-label">ZELLE</span>
+                <span class="don-val">The18stepsUSA</span>
+              </div>
+            </div>
+
+            <div class="gold-line-w" style="margin:14px auto 10px;"></div>
+
+            <div class="contact-title">CONTACT US</div>
+            <p class="contact-row"><strong>Jithesh Viswanadh</strong> &mdash; President</p>
+            <p class="contact-row"><strong>Hari</strong> &mdash; Secretary</p>
+            <p class="contact-row"><strong>Jishnu</strong> &mdash; Event Coordinator</p>
+          </div>
+        </div>
+
+        <!-- PANEL 3: Front Cover -->
+        <div class="panel out-front">
+          <!-- Full-bleed venue exterior image at top -->
+          <div class="front-venue-hero">
+            <img src={`${base}/images/flyer/flyer-001.jpg`} alt="PYLUSD Performing Arts Center"/>
+            <div class="front-venue-hero-ov"></div>
+            <p class="sanskrit-float">
+              mokṣakāraṇasāmagryāṁ bhaktireva garīyasī ।<br/>
+              svasvarūpānusaṁdhānaṁ bhaktirityabhidhīyate ॥
+              <span style="font-size:4.5px;color:rgba(245,240,232,0.2);display:block;">— vivekacūṭāmaṇi: 32</span>
+            </p>
+          </div>
+
+          <svg class="mandala-bg" style="width:320px;height:320px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.035;"><use href="#mr"/></svg>
+          <div class="rings-ov"></div>
+          <svg class="corner-orn tl" style="z-index:5;"><use href="#co"/></svg>
+          <svg class="corner-orn tr" style="z-index:5;"><use href="#co"/></svg>
+          <svg class="corner-orn bl" style="z-index:5;"><use href="#co"/></svg>
+          <svg class="corner-orn br" style="z-index:5;"><use href="#co"/></svg>
+
+          <div class="front-body">
+            <div class="front-logo-wrap">
+              <div class="front-logo-glow"></div>
+              <img src={`${base}/images/flyer/flyer-008.jpg`} alt="The 18 Steps USA" class="front-logo"/>
+            </div>
+
+            <div class="front-title">THE 18<br/>STEPS</div>
+            <div class="front-sub">USA</div>
+            <p class="front-tag">Preserving Dharma, Heritage and Humanity</p>
+
+            <svg class="lotus-div" style="margin:6px auto;"><use href="#ld"/></svg>
+
+            <div class="front-evt">INAUGURATION</div>
+            <div class="front-date">June 6, 2026</div>
+            <div class="front-day">SATURDAY</div>
+
+            <div class="gold-line" style="margin:5px auto;"></div>
+
+            <div class="front-ven">
+              <strong>PYLUSD Performing Arts Center</strong>
+              1651 Valencia Ave, Placentia, CA 92870
+            </div>
+
+            <p class="front-inv">
+              You're invited as we launch The 18 Steps USA<br/>
+              with an unforgettable event this June!<br/>
+              This isn't just an event &mdash; it's the beginning of a movement.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- =========== INSIDE =========== -->
+    <p class="screen-label">INSIDE &mdash; Chief Guest (left) &bull; Program (center) &bull; Chaayamukhi (right)</p>
+
+    <div class="flyer-page inside" id="page-inside">
+      <div class="panels">
+
+        <!-- PANEL 4: Chief Guest — image takes ~55% of panel -->
+        <div class="panel in-guest">
+          <div class="guest-hero">
+            <img src={`${base}/images/flyer/flyer-006.jpg`} alt="Sri Sharath A Haridasan"/>
+            <div class="guest-hero-ov"></div>
+            <div class="guest-badge">CHIEF GUEST</div>
+            <div class="guest-name-float">
+              <h3>Sri Sharath A Haridasan</h3>
+              <div class="sub">Scholar &bull; Orator &bull; Filmmaker &bull; Author</div>
+            </div>
+          </div>
+
+          <div class="guest-content">
+            <svg class="mandala-bg" style="width:150px;height:150px;bottom:0;right:-20px;opacity:0.03;"><use href="#mr"/></svg>
+
+            <p class="guest-bio">
+              He is a scholar and orator who has dedicated his life to unraveling the depths of Sanatana Dharma, rituals, literature, and history. He is also an accomplished writer, director, editor, and producer of films. He founded The 18 Steps organization in 2018 and continues to guide and inspire many, on their spiritual journey.
+            </p>
+            <p class="guest-bio" style="margin-top:3px;">
+              Apart from the hundreds of spiritual discourses online and at various temples across India, he also created the documentary series "Akhilam Madhuram" focused on Guruvayoor Temple, of Athirathram, and of Kalampezhuthum Pattum. He also authored "Krishna's Whisper: 18 Meditations for a Life of Purpose and Prosperity", recognized in the World Book Fair 2025.
+            </p>
+
+            <div class="gold-line-w" style="margin:5px auto;"></div>
+
+            <div class="guest-works">
+              <div class="gw-item">
+                <img src={`${base}/images/flyer/flyer-007.jpg`} alt="Krishna's Whisper" class="gw-img" style="height:68px;"/>
+                <p class="gw-cap">Krishna's Whisper</p>
+              </div>
+              <div class="gw-item">
+                <img src={`${base}/images/flyer/flyer-009.jpg`} alt="Akhilam Madhuram" class="gw-img" style="height:48px;"/>
+                <p class="gw-cap">Akhilam Madhuram</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 5: Program + Venue images -->
+        <div class="panel in-prog">
+          <svg class="mandala-bg" style="width:240px;height:240px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.03;"><use href="#mr"/></svg>
+          <div class="dots-ov" style="opacity:0.25;"></div>
+          <div class="lattice-ov" style="opacity:0.35;"></div>
+          <svg class="corner-orn tl"><use href="#co"/></svg>
+          <svg class="corner-orn tr"><use href="#co"/></svg>
+          <div class="border-glow-l"></div>
+
+          <div class="prog-top">
+            <div class="prog-title">PROGRAM</div>
+            <svg class="lotus-div" style="margin:4px auto 6px;"><use href="#ld"/></svg>
+
+            <div class="prog-items">
+              <div class="prog-row">
+                <span class="time">12:00 PM</span><span class="dot"></span><span class="evt">Lunch</span>
+              </div>
+              <div class="prog-row">
+                <span class="time">1:00 PM</span><span class="dot"></span><span class="evt">Invocation</span>
+              </div>
+              <div class="prog-row">
+                <span class="time">1:15 PM</span><span class="dot"></span><span class="evt">Welcome Address</span>
+              </div>
+              <div class="prog-row hl">
+                <span class="time">1:30 PM</span><span class="dot"></span><span class="evt">Inauguration</span>
+              </div>
+              <div class="prog-row hl">
+                <span class="time">2:00 PM</span><span class="dot"></span><span class="evt">Keynote Address</span>
+              </div>
+              <div class="prog-row">
+                <span class="time">3:00 PM</span><span class="dot"></span><span class="evt">Felicitations</span>
+              </div>
+              <div class="prog-row">
+                <span class="time">3:30 PM</span><span class="dot"></span><span class="evt">Tea Break</span>
+              </div>
+              <div class="prog-row hl">
+                <span class="time">4:00 PM</span><span class="dot"></span><span class="evt">Chaayamukhi</span>
+              </div>
+              <div class="prog-row">
+                <span class="time">5:30 PM</span><span class="dot"></span><span class="evt">Vote of Thanks</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Large venue images -->
+          <div class="venue-full">
+            <div class="venue-full-grid">
+              <img src={`${base}/images/flyer/flyer-001.jpg`} alt="Venue Exterior"/>
+              <img src={`${base}/images/flyer/flyer-000.jpg`} alt="Venue Interior"/>
+            </div>
+            <div class="venue-full-ov">
+              <div class="ven-label">VENUE</div>
+              <div class="ven-name">PYLUSD Performing Arts Center</div>
+              <div class="ven-addr">1651 Valencia Ave, Placentia, CA 92870</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL 6: Chaayamukhi — image takes ~50% of panel -->
+        <div class="panel in-chaaya">
+          <div class="chaaya-hero">
+            <img src={`${base}/images/flyer/chaayamukhi.jpg`} alt="Chaayamukhi Performance"/>
+            <div class="chaaya-hero-ov"></div>
+            <div class="chaaya-text-float">
+              <div class="chaaya-pre">PRESENTING</div>
+              <div class="chaaya-t">Chaayamukhi</div>
+              <div class="chaaya-st">A Musical Dance Drama</div>
+            </div>
+          </div>
+
+          <div class="chaaya-content">
+            <svg class="mandala-bg" style="width:160px;height:160px;bottom:20px;left:50%;transform:translateX(-50%);opacity:0.025;"><use href="#mr"/></svg>
+            <div class="lattice-ov" style="opacity:0.3;"></div>
+
+            <p class="chaaya-desc" style="position:relative;z-index:2;">
+              Experience the enchanting tale of Chaayamukhi brought to life through an extraordinary fusion of classical dance, music, and theatrical storytelling. This visual spectacle reimagines ancient mythology for a modern audience.
+            </p>
+
+            <div class="gold-line-w" style="margin:6px auto;position:relative;z-index:2;"></div>
+
+            <div class="sl-sec" style="position:relative;z-index:2;">
+              <img src={`${base}/images/flyer/flyer-004.jpg`} alt="StoryLoom" class="sl-img"/>
+              <div class="sl-text">
+                <div class="n">StoryLoom</div>
+                <div class="tl">Weaving Stories, Frame by Frame...</div>
+                <div class="d">A creative initiative bringing mythological narratives to life through art and cinema.</div>
+              </div>
+            </div>
+
+            <div class="rsvp-box" style="position:relative;z-index:2;">
+              <svg class="lotus-div" style="margin-bottom:3px;"><use href="#ld"/></svg>
+              <div class="rt">RSVP NOW</div>
+              <p class="rd">
+                This isn't just an event &mdash; it's the beginning of a movement to preserve ancient wisdom and pass it on to our children.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="back-to-site">
+      <a href={`${base}/`}>Back to Main Site</a>
+    </div>
+
+    <script>
+      function showView(view) {
+        const outside = document.getElementById('page-outside');
+        const inside = document.getElementById('page-inside');
+        const labels = document.querySelectorAll('.screen-label');
+        const buttons = document.querySelectorAll('.screen-controls .btn-group button');
+        buttons.forEach(b => b.classList.remove('active'));
+        if (view === 'outside') {
+          outside.style.display = 'block'; inside.style.display = 'none';
+          labels[0].style.display = 'block'; labels[1].style.display = 'none';
+          document.getElementById('btn-outside').classList.add('active');
+        } else if (view === 'inside') {
+          outside.style.display = 'none'; inside.style.display = 'block';
+          labels[0].style.display = 'none'; labels[1].style.display = 'block';
+          document.getElementById('btn-inside').classList.add('active');
+        } else {
+          outside.style.display = 'block'; inside.style.display = 'block';
+          labels[0].style.display = 'block'; labels[1].style.display = 'block';
+          document.getElementById('btn-both').classList.add('active');
+        }
+      }
+    </script>
+  </body>
+</html>
